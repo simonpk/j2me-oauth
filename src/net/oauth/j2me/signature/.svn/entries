@@ -1,0 +1,52 @@
+8
+
+dir
+2709
+svn+ssh://simonk@home.bh.corp.sp1.yahoo.com/home/y/share/svn/fireeagle-rails/clients/j2me/FE_OAuth/src/net/oauth/j2me/signature
+svn+ssh://simonk@home.bh.corp.sp1.yahoo.com/home/y/share/svn/fireeagle-rails
+
+
+
+2008-02-06T00:50:25.071913Z
+2027
+simonk
+
+
+svn:special svn:externals svn:needs-lock
+
+OAuthSignature.java
+file
+
+
+
+
+2008-03-04T19:04:22.000000Z
+983b753d0818972731047c682596ad47
+2008-02-06T00:50:25.071913Z
+2027
+simonk
+
+HMACSHA1Signature.java
+file
+
+
+
+
+2008-03-04T19:04:22.000000Z
+fcc6079d1efd9b91d5ad45f1e0a985f2
+2008-02-06T00:50:25.071913Z
+2027
+simonk
+
+PLAINTEXTSignature.java
+file
+
+
+
+
+2008-03-04T19:04:22.000000Z
+553e63eaedb3987e9a91537c26a2c449
+2008-02-06T00:50:25.071913Z
+2027
+simonk
+

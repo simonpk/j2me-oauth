@@ -1,0 +1,41 @@
+8
+
+dir
+2709
+svn+ssh://simonk@home.bh.corp.sp1.yahoo.com/home/y/share/svn/fireeagle-rails/clients/j2me/FE_OAuth/dist
+svn+ssh://simonk@home.bh.corp.sp1.yahoo.com/home/y/share/svn/fireeagle-rails
+
+
+
+2008-02-25T19:46:15.129919Z
+2411
+simonk
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+ca34bb13-bb58-4cbd-88d2-d13a5f90501a
+
+FE_OAuth.jar
+file
+
+
+
+
+2008-03-04T19:03:56.000000Z
+54af34f5aac83ecdac40739f60c1c826
+2008-02-25T19:46:15.129919Z
+2411
+simonk
+has-props
+

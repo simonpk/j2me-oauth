@@ -1,0 +1,79 @@
+8
+
+dir
+2709
+svn+ssh://simonk@home.bh.corp.sp1.yahoo.com/home/y/share/svn/fireeagle-rails/clients/j2me/FE_OAuth/nbproject
+svn+ssh://simonk@home.bh.corp.sp1.yahoo.com/home/y/share/svn/fireeagle-rails
+
+
+
+2008-02-25T19:46:15.129919Z
+2411
+simonk
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+ca34bb13-bb58-4cbd-88d2-d13a5f90501a
+
+project.properties
+file
+
+
+
+
+2008-02-25T19:43:00.000000Z
+9670aba53e56b6deefebec470bb26719
+2008-02-25T19:46:15.129919Z
+2411
+simonk
+
+project.xml
+file
+
+
+
+
+2008-02-25T19:43:00.000000Z
+31bb836604a9336ce8eaffffd92b54ab
+2008-02-06T00:50:25.071913Z
+2027
+simonk
+
+genfiles.properties
+file
+
+
+
+
+2008-02-25T19:43:00.000000Z
+933fae636c2307f9f2ccf67de2da84e9
+2008-02-06T00:50:25.071913Z
+2027
+simonk
+
+private
+dir
+
+build-impl.xml
+file
+
+
+
+
+2008-02-25T19:43:00.000000Z
+0e7e84efe9956a326e7978cb607a98c7
+2008-02-06T00:50:25.071913Z
+2027
+simonk
+

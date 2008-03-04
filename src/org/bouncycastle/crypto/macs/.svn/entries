@@ -1,0 +1,40 @@
+8
+
+dir
+2709
+svn+ssh://simonk@home.bh.corp.sp1.yahoo.com/home/y/share/svn/fireeagle-rails/clients/j2me/FE_OAuth/src/org/bouncycastle/crypto/macs
+svn+ssh://simonk@home.bh.corp.sp1.yahoo.com/home/y/share/svn/fireeagle-rails
+
+
+
+2008-02-25T19:46:15.129919Z
+2411
+simonk
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+ca34bb13-bb58-4cbd-88d2-d13a5f90501a
+
+HMac.java
+file
+
+
+
+
+2008-03-04T19:04:36.000000Z
+559b709e582e86f20850c59238e92880
+2008-02-25T19:46:15.129919Z
+2411
+simonk
+
