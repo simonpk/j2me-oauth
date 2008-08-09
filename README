@@ -1,0 +1,7 @@
+This is repo primarily a JAR file and source.  
+
+Build: dist/FE_OAuth.jar
+
+Source: src/*
+
+See http://fireeagle.yahoo.net for more info.
