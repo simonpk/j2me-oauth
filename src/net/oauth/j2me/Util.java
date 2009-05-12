@@ -157,7 +157,7 @@ public class Util {
         // TODO -- better way to handle unexpected responses
         try {
             System.out.println("UTIL -- posting to "+urlPieces[0]);
-            c = (HttpsConnection)Connector.open(fullUrl, Connector.READ_WRITE); // hack for emulator?
+            c = (HttpsConnection)Connector.open(urlPieces[0], Connector.READ_WRITE); // hack for emulator?
             
             // Set the request method and headers
             c.setRequestMethod(HttpConnection.POST);
