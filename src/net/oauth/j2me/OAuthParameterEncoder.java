@@ -20,11 +20,11 @@ package net.oauth.j2me;
 //import java.lang.CharSequence;
 //import java.lang.StringBuilder;
 //import java.net.URLEncoder;
-import net.oauth.j2me.Util;
 //import java.lang.StringBuffer;
 public class OAuthParameterEncoder {
-    private String unreservedCharactersPattern = "[a-zA-Z0-9\\-\\._~]";
-    private String unreservedCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~";
+    //private String unreservedCharactersPattern = "[a-zA-Z0-9\\-\\._~]";
+    //private String unreservedCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~";
+    private String unreservedCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._";
 
     public OAuthParameterEncoder() {
     }

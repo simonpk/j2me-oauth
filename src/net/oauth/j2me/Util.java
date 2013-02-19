@@ -8,8 +8,9 @@
  */
 
 package net.oauth.j2me;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
+//import java.io.ByteArrayOutputStream;
+//import java.io.DataInputStream;
+import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Enumeration;
@@ -17,13 +18,16 @@ import java.util.Hashtable;
 import java.util.Vector;
 import javax.microedition.io.Connector;
 import javax.microedition.io.HttpConnection;
-import javax.microedition.io.HttpsConnection;
+import javax.microedition.io.ConnectionNotFoundException;
+//import javax.microedition.io.HttpsConnection;
 
 /**
  *
  * @author Administrator
  */
 public class Util {
+
+    static boolean noData;
     
     /** Creates a new instance of Util */
     public Util() {
@@ -31,7 +35,7 @@ public class Util {
     
     // if the same key occurs in h1 and h2, use the value from h1
     public static final Hashtable hashtableMerge(Hashtable h1, Hashtable h2) {
-        System.out.println("in hastableMerge");
+        ////system.out.println("in hastableMerge");
         Hashtable h=new Hashtable();
         Enumeration keys=h1.keys();
         while (keys.hasMoreElements()) {
@@ -116,17 +120,19 @@ public class Util {
                     sb.append("%26");
                     //} else if (c == ' ') {
                     //    sb.append('+'); // maybe don't do this either
+                } else if (c == '~') {
+                    sb.append("%7E");
                 } else if (
                         // safe characters
                         c == '-'
                         || c == '_'
                         || c == '.'
-                        || c == '!'
-                        || c == '~'
-                        || c == '*'
-                        || c == '\''
-                        || c == '('
-                        || c == ')'
+                        //|| c == '!'
+                        //|| c == '~'
+                        //|| c == '*'
+                        //|| c == '\''
+                        //|| c == '('
+                        //|| c == ')'
                         || (c >= 'A' && c <= 'Z')
                         || (c >= 'a' && c <= 'z') ) {
                     sb.append(c);
@@ -147,8 +153,61 @@ public class Util {
         return (sb.toString());
     }
     
-    public static final String postViaHttpsConnection(String fullUrl) throws IOException, OAuthServiceProviderException {
+    public static final String postViaHttpsConnection(String fullUrl) throws IOException,
+            OAuthServiceProviderException {
         String[] urlPieces=split(fullUrl, "?");
+
+        //HttpsConnection c = null;
+        int rc;
+        HttpConnection c = null;
+        OutputStream os = null;
+        InputStream is = null;
+        String respBody = new String("");
+
+        try {
+            //c= (HttpsConnection) Connector.open(url, Connector.READ);
+            c = (HttpConnection) Connector.open(urlPieces[0], Connector.READ); // hack for emulator?
+            c.setRequestMethod(HttpConnection.POST);
+            c.setRequestProperty("User-Agent", "Twhii");
+            c.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            c.setRequestProperty("Content-Length", ""+urlPieces[1].length());
+
+            os = c.openOutputStream();
+            os.write(urlPieces[1].getBytes());
+            
+            rc = c.getResponseCode();
+
+            if (!noData)
+            {
+                is = c.openInputStream();
+                int ch;
+                char cc;
+                StringBuffer textBuffer = new StringBuffer();
+
+                while ((ch = is.read()) != -1)
+                {
+                    cc = (char) ch;
+                    textBuffer.append(cc);//*/
+                }
+
+                respBody = textBuffer.toString();
+            }
+        } catch (ClassCastException e) {
+            throw new IllegalArgumentException("Not an HTTP URL");
+        } catch (ConnectionNotFoundException n) {
+            throw new IllegalArgumentException("No working connection");
+        } finally {
+            if (is != null)
+                is.close();
+            if (c != null)
+                c.close();
+        }
+
+        if (rc != HttpConnection.HTTP_OK) {
+            throw new OAuthServiceProviderException("HTTP response code: " + rc, rc, respBody);
+        }
+        return respBody;
+        /*
         HttpsConnection c = null;
         DataInputStream dis = null;
         OutputStream os = null;
@@ -156,7 +215,7 @@ public class Util {
         String respBody = new String(""); // return empty string on bad things
         // TODO -- better way to handle unexpected responses
         try {
-            System.out.println("UTIL -- posting to "+urlPieces[0]);
+            ////system.out.println("UTIL -- posting to "+urlPieces[0]);
             c = (HttpsConnection)Connector.open(urlPieces[0], Connector.READ_WRITE); // hack for emulator?
             
             // Set the request method and headers
@@ -168,7 +227,7 @@ public class Util {
             
             // Getting the output stream may flush the headers
             os = c.openOutputStream();
-            System.out.println("UTIL -- writing POST data: "+urlPieces[1]);
+            ////system.out.println("UTIL -- writing POST data: "+urlPieces[1]);
             os.write(urlPieces[1].getBytes());
             os.flush();           // Optional, getResponseCode will flush
             
@@ -179,12 +238,12 @@ public class Util {
             
             int len = c.getHeaderFieldInt("Content-Length", 0);
             //int len = (int)c.getLength();
-            System.out.println("content-length="+len);
+            ////system.out.println("content-length="+len);
             dis = c.openDataInputStream();
             
             byte[] data = new byte[len];
             if (len == 0) {
-                System.out.println("UTIL -- no length, reading individual characters...");
+                ////system.out.println("UTIL -- no length, reading individual characters...");
                 ByteArrayOutputStream tmp = new ByteArrayOutputStream();
                 int ch;
                 while( ( ch = dis.read() ) != -1 ) {
@@ -192,13 +251,16 @@ public class Util {
                 }
                 data = tmp.toByteArray();
             } else {
-                System.out.println("UTIL -- got a length, reading...");
+                ////system.out.println("UTIL -- got a length, reading...");
                 dis.readFully(data);
             }
             respBody=new String(data);
         } catch (ClassCastException e) {
             throw new IllegalArgumentException("Not an HTTP URL");
-        } finally {
+        } catch (ConnectionNotFoundException n) {
+            throw new IllegalArgumentException("No working connection");
+        }
+        finally {
             if (dis != null)
                 dis.close();
             if (os != null)
@@ -209,61 +271,56 @@ public class Util {
         if (rc != HttpConnection.HTTP_OK) {
             throw new OAuthServiceProviderException("HTTP response code: " + rc, rc, respBody);
         }
-        return respBody;
+        return respBody;//*/
     }
     
     public static final String getViaHttpsConnection(String url) throws IOException, OAuthServiceProviderException {
-        HttpsConnection c = null;
-        DataInputStream dis = null;
-        OutputStream os = null;
+        //HttpsConnection c = null;
+        HttpConnection c = null;
+        InputStream is = null;
         int rc;
         String respBody = new String(""); // return empty string on bad things
         // TODO -- better way to handle unexpected responses
         
         try {
-            System.out.println("UTIL -- opening connection");
-            c= (HttpsConnection) Connector.open(url, Connector.READ);
+            //c= (HttpsConnection) Connector.open(url, Connector.READ);
+            c= (HttpConnection) Connector.open(url, Connector.READ);
             c.setRequestMethod(HttpConnection.GET);
-            c.setRequestProperty("User-Agent", "Profile/MIDP-2.0 Configuration/CLDC-1.0");
+            c.setRequestProperty("User-Agent", "Twhii");
             c.setRequestProperty("Cache-Control", "no-store");
-            c.setRequestProperty("Connection", "close"); // not sure this is a good idea, but HTTP/1.0 might be less error-prone, some clients have trouble with chunked responses
-            System.out.println("UTIL -- connection open");
+            // not sure this is a good idea, but HTTP/1.0 might be less error-prone,
+            //  some clients have trouble with chunked responses
+            c.setRequestProperty("Connection", "close"); 
             
-            // Getting the response code will open the connection,
-            // send the request, and read the HTTP response headers.
-            // The headers are stored until requested.
             rc = c.getResponseCode();
-            System.out.println("UTIL -- got response code" + rc);
-            
-            // Get the length and process the data
-            int len = c.getHeaderFieldInt("Content-Length", 0);
 
-            System.out.println("content-length="+len);
-            dis = c.openDataInputStream();
-            
-            byte[] data = null; 
-            if (len == -1L) {
-                System.out.println("UTIL -- no length, reading individual characters...");
-                ByteArrayOutputStream tmp = new ByteArrayOutputStream();
+            if (!noData)
+            {
+                is = c.openInputStream();
+
                 int ch;
-                while( ( ch = dis.read() ) != -1 ) {
-                    tmp.write( ch );
+                char cc;
+                StringBuffer textBuffer = new StringBuffer();
+
+                while ((ch = is.read()) != -1)
+                {
+                    cc = (char) ch;
+                    textBuffer.append(cc);//*/
                 }
-                data = tmp.toByteArray();
-            } else {
-                System.out.println("UTIL -- got a length, reading...");
-                data = new byte[len];
-                dis.read(data);
+
+                respBody = textBuffer.toString();
             }
-            respBody=new String(data);
         } catch (ClassCastException e) {
             throw new IllegalArgumentException("Not an HTTP URL");
+        } catch (ConnectionNotFoundException n) {
+            throw new IllegalArgumentException("No working connection");
         } finally {
-            if (dis != null)
-                dis.close();
+            if (is != null)
+                is.close();
             if (c != null)
                 c.close();
         }
+        
         if (rc != HttpConnection.HTTP_OK) {
             throw new OAuthServiceProviderException("HTTP response code: " + rc, rc, respBody);
         }
